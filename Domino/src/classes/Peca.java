@@ -27,11 +27,11 @@ public class Peca {
     }
 
     //verifica se o numero passado existe na peça atual
-    public boolean verifica(int numero){
+    public boolean verificaNum(int numero){
         return (numero == esquerda || numero == direita);
     }
 
-    public int[] getPecaXY() {
-        return pecaXY;
+    public String saidaPeca() {
+        return direita + "|"+ esquerda + "|";
     }
 }
