@@ -3,7 +3,6 @@ package classes;
 public class Peca {
     private int esquerda;
     private int direita;
-    private int[] pecaXY = {esquerda, direita};
 
     public Peca(int esquerda, int direita){
         this.esquerda = esquerda;
