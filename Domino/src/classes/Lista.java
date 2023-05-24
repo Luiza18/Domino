@@ -23,6 +23,5 @@ public class Lista {
         
         public Lista getProx(){
             return prox;
-        }
-    
+        }  
 }

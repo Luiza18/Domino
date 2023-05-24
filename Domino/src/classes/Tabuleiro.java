@@ -2,17 +2,16 @@ package classes;
 
 public class Tabuleiro {
     private int n;
-    private Peca peca;
-    private Lista pecas; 
+    private Lista pecas,r,u, novoTopo; 
     private Lista conjunto = pecas;
+    private Numeros repitidos, unicos;
     private int index;
-    private int indexRepitidos;
-    private int [] repitidos = new int[index];
 
-    public Tabuleiro(int n, Peca peca){
+    public Tabuleiro(int n){
         this.n = n;
-        this.peca = peca;
-        index = indexRepitidos = 0;
+        index = 0;
+        repitidos = new Numeros(n);
+        unicos = new Numeros(n);
     }
 
     public Lista getPecas() {
@@ -23,9 +22,8 @@ public class Tabuleiro {
         this.pecas = pecas;
     }
 
-    public void adiciona(int esquerda, int direita){
-        peca = new Peca(esquerda, direita);
-        Lista novoTopo = new Lista(peca);
+    public void adiciona(Peca peca){
+        novoTopo = new Lista(peca);
         int length = n;
 
         if(pecas.getX() == null){
@@ -39,47 +37,41 @@ public class Tabuleiro {
         }
     }
 
-    public void addRepitidos(int num){
-        if(indexRepitidos < repitidos.length){
-            repitidos[indexRepitidos++] = num;
-        }
-    }
-
-    public boolean verificaRepitidos(int num){
-        boolean retorno = false;
-
-        for(int i=0; i < repitidos.length; i++){
-            if(repitidos[i] == num){
-                retorno = true;
-                break;
-            }
-        }
-        return retorno;
-    }
-
+    // tentar guarda a peça que tem o número            
     public void calcula(){
         int direita = conjunto.getX().getDireita();
         int esquerda = conjunto.getX().getEsquerda();
 
         if(conjunto.getProx() != null){
-            if(conjunto.getProx().getX().verificaNum(esquerda) && !verificaRepitidos(esquerda)){
-                addRepitidos(esquerda);
-            }else if(conjunto.getX().verificaNum(direita) && !verificaRepitidos(direita)){
-                addRepitidos(direita);
+            if(conjunto.getProx().getX().verificaNum(esquerda) && !repitidos.verificaNumero(esquerda)){
+                repitidos.add(esquerda);  
+            }
+            else if(!conjunto.getProx().getX().verificaNum(esquerda) && !unicos.verificaNumero(esquerda)){
+                unicos.add(esquerda);
+            }
+            else if(conjunto.getProx().getX().verificaNum(direita) && !repitidos.verificaNumero(direita)){
+                repitidos.add(direita);
+            }
+            else if(conjunto.getProx().getX().verificaNum(direita) && !unicos.verificaNumero(direita)){
+                unicos.add(direita);
             }
 
             conjunto = conjunto.getProx(); 
             calcula();
         }else{
-            if(!verificaRepitidos(esquerda)){
-                addRepitidos(esquerda);
-            }else if(!verificaRepitidos(direita)){
-                addRepitidos(direita);
+            if(!repitidos.verificaNumero(esquerda)){
+                repitidos.add(esquerda);
+            }else if(!repitidos.verificaNumero(direita)){
+                repitidos.add(direita);
+            }else if(!unicos.verificaNumero(direita)){
+                unicos.add(direita);
+            }else if(!unicos.verificaNumero(esquerda)){
+                unicos.add(esquerda);
             }
         }
     }
 
     public boolean verifica(){
-        return (repitidos.length > n -2);
-    }   
+        return (repitidos.getIndex() > n -2);
+    }  
 }
