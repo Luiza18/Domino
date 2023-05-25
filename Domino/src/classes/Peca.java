@@ -3,10 +3,20 @@ package classes;
 public class Peca {
     private int esquerda;
     private int direita;
+    private boolean usado;
 
     public Peca(int esquerda, int direita){
         this.esquerda = esquerda;
         this.direita = direita;
+        usado = false;
+    }
+
+    public boolean getUsado(){
+        return usado;
+    }
+
+    public void usar(){
+        usado = true;
     }
     
     public int getDireita() {
@@ -16,8 +26,6 @@ public class Peca {
     public int getEsquerda() {
         return esquerda;
     }
-
-    public Peca(){}
 
     public void inverte(){
         int aux = direita;

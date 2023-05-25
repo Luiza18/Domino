@@ -16,7 +16,7 @@ public class App {
         System.out.println("Digite o número de peças e as peças");
 
         int n = scanner.nextInt();
-        tabuleiro = new Tabuleiro(n);
+        //tabuleiro = new Tabuleiro(n);
 
          
         for (int i = 0; i < n; i++) {
@@ -32,7 +32,7 @@ public class App {
                 i--;
             }else{
                 peca = new Peca(esquerda, direita);
-                tabuleiro.adiciona(peca);
+                //tabuleiro.adiciona(peca);
             }
         }
 
