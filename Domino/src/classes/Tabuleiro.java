@@ -1,77 +1,39 @@
 package classes;
 
 public class Tabuleiro {
-    private int n;
-    private Lista pecas,r,u, novoTopo; 
-    private Lista conjunto = pecas;
-    private Numeros repitidos, unicos;
-    private int index;
+    private ListaNumeros unicos;
+    private ListaPecas lista;
+    private Peca pecas [];
+    private int valores [] [];
 
-    public Tabuleiro(int n){
-        this.n = n;
-        index = 0;
-        repitidos = new Numeros(n);
-        unicos = new Numeros(n);
+    public Tabuleiro(ListaPecas lista){
+       this.lista = lista;
+       pecas = lista.getPecas();
+       valores = new int [7][pecas.length];
+       repitidos = new ListaNumeros(pecas.length);
     }
 
-    public Lista getPecas() {
-        return pecas;
-    }
-
-    public void setConjunto(Lista pecas) {
-        this.pecas = pecas;
-    }
-
-    public void adiciona(Peca peca){
-        novoTopo = new Lista(peca);
-        int length = n;
-
-        if(pecas.getX() == null){
-            pecas.setX(peca);
-            length--;
-        }
-
-        if(index < length){
-            pecas.setProx(novoTopo);
-            index ++;
+    public void pecasDomino(){
+        for(int i =0; i< valores[0].length; i++){
+            valores[0][i] = i;
         }
     }
-
-    // tentar guarda a peça que tem o número            
-    public void calcula(){
-        int direita = conjunto.getX().getDireita();
-        int esquerda = conjunto.getX().getEsquerda();
-
-        if(conjunto.getProx() != null){
-            if(conjunto.getProx().getX().verificaNum(esquerda) && !repitidos.verificaNumero(esquerda)){
-                repitidos.add(esquerda);  
-            }
-            else if(!conjunto.getProx().getX().verificaNum(esquerda) && !unicos.verificaNumero(esquerda)){
-                unicos.add(esquerda);
-            }
-            else if(conjunto.getProx().getX().verificaNum(direita) && !repitidos.verificaNumero(direita)){
-                repitidos.add(direita);
-            }
-            else if(conjunto.getProx().getX().verificaNum(direita) && !unicos.verificaNumero(direita)){
-                unicos.add(direita);
-            }
-
-            conjunto = conjunto.getProx(); 
-            calcula();
-        }else{
-            if(!repitidos.verificaNumero(esquerda)){
-                repitidos.add(esquerda);
-            }else if(!repitidos.verificaNumero(direita)){
-                repitidos.add(direita);
-            }else if(!unicos.verificaNumero(direita)){
-                unicos.add(direita);
-            }else if(!unicos.verificaNumero(esquerda)){
-                unicos.add(esquerda);
+    
+    public void adiciona(){
+        int linhas [] = valores[0];
+        for(int i =0; i < pecas.length; i++){
+            for(int coluna = 0; coluna < linhas.length; coluna ++){
+                if(pecas[i].verificaNum(linhas[coluna])){
+                    linhas[coluna] = i;
+                }else{
+                    unicos.add(linhas[coluna]);
+                }
             }
         }
     }
 
     public boolean verifica(){
-        return (repitidos.getIndex() > n -2);
-    }  
+        return(unicos.getVetor().length < 3);
+    }
+    
 }
