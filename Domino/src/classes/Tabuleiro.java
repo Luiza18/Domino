@@ -3,6 +3,7 @@ package classes;
 public class Tabuleiro {
     private Peca pecas [];
     private int valores [] [];
+    private ListaEncadeada resultado;
 
     public Tabuleiro(ListaPecas lista){
        pecas = lista.getPecas();
@@ -54,8 +55,35 @@ public class Tabuleiro {
 
     public String sequencia(){
         String saida = "";
+        resultado = new ListaEncadeada(null);
+        int esquerda = -1;
+        int direita = -1;
 
-        
+        for(int i =1; i < valores.length; i++){
+            for(int j=0; j < valores[i].length; j++){
+                ListaEncadeada prox = new ListaEncadeada(null);
+                if(valores[i][j] != -1){
+                    int index = valores[i][j];
+                    Peca aux = pecas[index];
+                    
+                    if(resultado.getPeca() == null){
+                        resultado.setPeca(aux);
+                        resultado.setProx(prox);
+                    }else{
+                        esquerda = resultado.getPeca().getEsquerda();
+                        direita = resultado.getPeca().getDireita();
+
+                       if(aux.verificaNum(esquerda)){
+                        prox.setPeca(aux);
+                        resultado.setProx(prox);
+                       }else if(aux.verificaNum(direita)){
+                        aux.inverte();
+                       }
+                    }
+                }
+            }
+        }
+    
 
         return saida;
     }
