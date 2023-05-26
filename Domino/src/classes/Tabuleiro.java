@@ -3,30 +3,38 @@ package classes;
 public class Tabuleiro {
     private Peca pecas [];
     private int valores [] [];
-    private ListaEncadeada resultado;
+    private Lista resultado;
+    private int unicos [] = new int[2];
+    private int numUnicos [] = new int[2];
 
-    public Tabuleiro(ListaPecas lista){
+    public Tabuleiro(VetorPecas lista){
        pecas = lista.getPecas();
-       pecas = lista.getPecas();
-       valores = new int [7][pecas.length];
+       valores = new int [7][pecas.length+1];
+       resultado = new Lista(null);
+       preencheMatriz();
     }
 
-    public void pecasDomino(){
-        for(int i =0; i< valores[0].length; i++){
-            valores[0][i] = i;
-        }
+    public int[][] getValores() {
+        return valores;
+    }
 
+    private int [][] preencheMatriz(){
         for(int i=0; i < valores.length; i ++){
             for(int j=1; j < valores[i].length; j++){
                 valores[i][j] = -1;
             }
+        } 
+
+        for(int i=0; i < 7; i++){
+            valores[0][i] = i;
         }
-        
+
+        return valores;
     }
     
     public void adiciona(){
         int linhas [] = valores[0];
-        for(int i =0; i < pecas.length; i++){
+        for(int i =1; i < pecas.length; i++){
             for(int coluna = 0; coluna < linhas.length; coluna ++){
                 if(pecas[i].verificaNum(linhas[coluna])){
                     linhas[coluna] = i;
@@ -35,57 +43,79 @@ public class Tabuleiro {
         }
     }
 
-    public int unicos(){
-        int qtd = 0;
+    public boolean verifica(){
+        int k = 0;
+        boolean possivel = false;
 
         for(int i=1; i < 2 ; i++){
             for(int j =0; j <valores[i].length; j++){
                 if(valores[i][j] == -1){
-                    qtd ++;
+                    unicos[k++] = valores[i][j];
+                    numUnicos[k++] = j;
                 }
             }
         }
 
-        return qtd;
+        if(k < 1){
+            Lista aux = new Lista(pecas[unicos[k]]);
+            possivel = true;
+            if(pecas[unicos[0]].getEsquerda() != numUnicos[0]){
+                pecas[unicos[0]].inverte();
+            }
+
+            if(k ==1){
+                if(pecas[unicos[1]].getDireita() != numUnicos[0]){
+                    pecas[unicos[1]].inverte();
+                    resultado.setProx(aux);
+                }
+            }
+
+            resultado.setPeca(pecas[unicos[0]]);
+        }
+
+        return possivel;
     }
 
-    public boolean verifica(){
-        return(unicos() < 3);
-    }
-
-    public String sequencia(){
-        String saida = "";
-        resultado = new ListaEncadeada(null);
-        int esquerda = -1;
+    public void sequencia(){
+        Peca ultima = null;
         int direita = -1;
 
+        if(resultado.getProx().getPeca() != null){
+            ultima = resultado.getProx().getPeca();
+        }
+
+        
         for(int i =1; i < valores.length; i++){
             for(int j=0; j < valores[i].length; j++){
-                ListaEncadeada prox = new ListaEncadeada(null);
+                Lista prox = new Lista(null);
+
                 if(valores[i][j] != -1){
                     int index = valores[i][j];
                     Peca aux = pecas[index];
-                    
+
                     if(resultado.getPeca() == null){
                         resultado.setPeca(aux);
-                        resultado.setProx(prox);
                     }else{
-                        esquerda = resultado.getPeca().getEsquerda();
                         direita = resultado.getPeca().getDireita();
 
-                       if(aux.verificaNum(esquerda)){
-                        prox.setPeca(aux);
-                        resultado.setProx(prox);
-                       }else if(aux.verificaNum(direita)){
-                        aux.inverte();
-                       }
+                        if(aux.verificaNum(direita)){
+                            if(aux.getDireita() == direita){
+                                aux.inverte();
+                            }
+                            prox.setPeca(aux);
+                            resultado.setProx(prox);
+                        }
                     }
+                    
+                    resultado = resultado.getProx();
                 }
             }
         }
     
-
-        return saida;
+        if(resultado.getProx().getPeca() != ultima){
+            Lista ult = new Lista(ultima);
+            resultado.setProx(ult);
+        }
     }
     
 }

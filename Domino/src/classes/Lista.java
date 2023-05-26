@@ -1,10 +1,10 @@
 package classes;
 
-public class ListaEncadeada {
+public class Lista {
     private Peca peca;
-    private ListaEncadeada prox;
+    private Lista prox;
 
-    public ListaEncadeada(Peca p){
+    public Lista(Peca p){
         peca = p;
         prox = null;
     }
@@ -13,7 +13,7 @@ public class ListaEncadeada {
         return peca;
     }
 
-    public ListaEncadeada getProx() {
+    public Lista getProx() {
         return prox;
     }
 
@@ -21,7 +21,7 @@ public class ListaEncadeada {
         this.peca = peca;
     }
 
-    public void setProx(ListaEncadeada prox) {
+    public void setProx(Lista prox) {
         this.prox = prox;
     }    
 }

@@ -39,6 +39,6 @@ public class Peca {
     }
 
     public String saidaPeca() {
-        return direita + "|"+ esquerda + "|";
+        return esquerda + "|"+ direita + "|";
     }
 }

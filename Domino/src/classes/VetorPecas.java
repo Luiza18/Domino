@@ -1,10 +1,10 @@
 package classes;
 
-public class ListaPecas {
+public class VetorPecas {
     private int index;
     private Peca pecas [];
 
-    public ListaPecas(int tamanho){
+    public VetorPecas(int tamanho){
         pecas = new Peca [tamanho];
         index = 0;
     }
@@ -18,4 +18,9 @@ public class ListaPecas {
     public Peca[] getPecas() {
         return pecas;
     }
+
+    public void setPecas(Peca[] pecas) {
+        this.pecas = pecas;
+    }
+
 }
