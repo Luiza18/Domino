@@ -3,10 +3,19 @@ package classes;
 public class Lista {
     private Peca peca;
     private Lista prox;
+    private Lista ant;
 
-    public Lista(Peca p){
-        peca = p;
-        prox = null;
+    public Lista(Peca peca){
+        this.peca = peca;
+        prox = ant = null;
+    }
+
+    public Lista getAnt() {
+        return ant;
+    }
+
+    public void setAnt(Lista ant) {
+        this.ant = ant;
     }
 
     public Peca getPeca() {

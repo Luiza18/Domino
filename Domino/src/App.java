@@ -50,16 +50,6 @@ public class App {
         
         tabuleiro = new Tabuleiro(listaPecas);
 
-        //tabuleiro.adiciona();
-       int [][] valores = tabuleiro.getValores();
-        
-
-        for(int i=0; i < valores.length; i++){
-            for(int j= 0; j < valores[i].length; j++){
-                System.out.println(valores[i][j]);
-            }
-        }
-
          
     }
 }

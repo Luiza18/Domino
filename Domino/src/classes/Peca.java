@@ -33,9 +33,12 @@ public class Peca {
         esquerda = aux;
     }
 
-    //verifica se o numero passado existe na peça atual
     public boolean verificaNum(int numero){
         return (numero == esquerda || numero == direita);
+    }
+
+    public boolean pecaDupla(){
+        return (esquerda == direita);
     }
 
     public String saidaPeca() {
