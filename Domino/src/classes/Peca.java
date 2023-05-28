@@ -1,6 +1,4 @@
-package classes;
-
-public class Peca {
+public class Peca{
     private int esquerda;
     private int direita;
     private boolean usado;
@@ -35,10 +33,6 @@ public class Peca {
 
     public boolean verificaNum(int numero){
         return (numero == esquerda || numero == direita);
-    }
-
-    public boolean pecaDupla(){
-        return (esquerda == direita);
     }
 
     public String saidaPeca() {

@@ -1,36 +1,65 @@
-package classes;
-
 public class Lista {
-    private Peca peca;
-    private Lista prox;
-    private Lista ant;
+    private Node head;
 
-    public Lista(Peca peca){
-        this.peca = peca;
-        prox = ant = null;
+    public Lista(){
+        head = null;
     }
 
-    public Lista getAnt() {
-        return ant;
+    public void add(Peca p){
+        if(head != null){
+            head.push(p);
+        }else{
+            head = new Node(p);
+        }
     }
 
-    public void setAnt(Lista ant) {
-        this.ant = ant;
+    public void show(){
+        if(head != null){
+            head.show();
+        }
     }
 
-    public Peca getPeca() {
-        return peca;
+    public int size(){
+        if(head!=null){
+            return head.size();
+        }
+        else{
+            return 0;
+        }
     }
 
-    public Lista getProx() {
-        return prox;
+    public int [] tabela(){
+        int tabela [] = new int[7];
+
+        Node aux = head;
+
+        while(aux != null){
+            int esquerda = aux.getP().getEsquerda();
+            int direita = aux.getP().getDireita();
+
+            tabela[esquerda]++;
+            tabela[direita]++;
+
+            aux = aux.getProx();
+        }
+
+        return tabela;
     }
 
-    public void setPeca(Peca peca) {
-        this.peca = peca;
+    public Node getHead() {
+        return head;
     }
 
-    public void setProx(Lista prox) {
-        this.prox = prox;
-    }    
+    public Peca verifica(int num){
+        Node aux = head;
+
+        while(aux != null){
+            if(aux.getP().verificaNum(num)){
+                return aux.getP();
+            }else{
+                aux = aux.getProx();
+            }
+        }
+        return aux.getP();
+    }
 }

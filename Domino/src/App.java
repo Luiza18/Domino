@@ -1,13 +1,9 @@
 import java.util.Scanner;
-import classes.Peca;
-import classes.Tabuleiro;
-import classes.VetorPecas;
 
 public class App {
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
-        VetorPecas listaPecas;
-        Peca peca;
+        Lista pecas = new Lista();
         Tabuleiro tabuleiro;
         //String valores;
 
@@ -17,7 +13,6 @@ public class App {
         System.out.println("Digite o número de peças e as peças");
 
         int n = scanner.nextInt();
-        listaPecas = new VetorPecas(n);
         int k=0;
 
         while(k < n){
@@ -37,19 +32,18 @@ public class App {
                 break;
             }
 
-
-            peca = new Peca(esquerda, direita);
-            listaPecas.add(peca);
-            System.out.println("\nPeça: "+ peca.saidaPeca()+ " adicionada com sucesso\n");
-
+            Peca peca = new Peca(esquerda, direita);
+            pecas.add(peca);
             k++;
         }
 
-        scanner.close();
-        
-        
-        tabuleiro = new Tabuleiro(listaPecas);
+        tabuleiro = new Tabuleiro(pecas);
 
-         
+        if(tabuleiro.verifica()){
+            System.out.println("\nÉ possível formar uma sequência");
+            tabuleiro.getResultado().show();
+        }else{
+            System.out.println("\nNão possível formar uma sequência");
+        }
     }
 }

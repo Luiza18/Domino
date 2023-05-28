@@ -1,107 +1,85 @@
-package classes;
-
 public class Tabuleiro {
-    private Peca pecas [];
-    private int tabela [] = new int[7];
-    private int qtdUnicos;
-    private int unicos[] = {-1,-1};
-    private int repitidos [] = new int [7];
+    private Lista pecas;
     private Lista resultado;
-    private Lista ult;
+    private int vetorUnicos [] = new int[unicos()];
 
-    public Tabuleiro(VetorPecas lista){
-       pecas = lista.getPecas();
-       preencheTabela();
-       qtdUnicos = 0;
-      
+    public Tabuleiro(Lista pecas){
+        this.pecas = pecas;
     }
 
-    private void preencheTabela(){
-        for(int k =0; k < pecas.length; k++){
-            for(int i =0; i < tabela.length; i++){
-                if(pecas[k].verificaNum(i)){
-                    if(pecas[k].pecaDupla()){
-                        tabela[i] = tabela[i] + 2;
-                    }else{
-                        tabela[i]++;
-                    }
-                }
-            }
-        } 
+    private int unicos(){
+        int vetor [] = pecas.tabela();
+        int qtd = 0;
 
-        for(int i = 0; i < repitidos.length; i++){
-            repitidos[i] = -1;
+        for(int i =0; i < vetor.length; i++){
+            if(vetor[i] ==1){
+                vetorUnicos[qtd] = vetor[i];
+                qtd++;
+            }
+        }
+        return qtd;
+    }
+
+    public int qtdNumero(){
+        int vetor [] = pecas.tabela();
+        int qtd = 0;
+
+        for(int i =0; i < vetor.length; i++){
+            if(vetor[i] != 0){
+                qtd++;
+            }
+        }
+        return qtd;
+    }
+
+    public boolean verifica(){
+        return(pecas.size() == qtdNumero() || unicos() < 3);
+    }
+
+   public int maisRepete(){
+    int vetor [] = pecas.tabela();
+    int maior = vetor[0];
+
+    for(int i =0; i < vetor.length; i++){
+        if(vetor[i] > maior){
+            maior = vetor[i];
         }
     }
 
-    private boolean verifica(){
-        int maior = 1;
-        int k =0;
+    return maior;
+   }
 
-        for(int i =0; i < tabela.length; i++){
-            if(tabela[i] == 1){
-                qtdUnicos++;
-                if(unicos[0] != tabela[i]){
-                    unicos[1] = tabela[i];
-                }else{
-                    unicos[0] = tabela[i];
-                }
+   public void sequencia(){
+    Peca primeira = null; 
+    Peca ultima = null;
+
+        if(unicos() > 0){
+            if(unicos() == 2){
+                ultima = pecas.verifica(vetorUnicos[1]);
             }
 
-            if(tabela[i] > maior){
-                repitidos[k] = i;
-                k++;
-            }
+            primeira = pecas.verifica(vetorUnicos[0]);
         }
-        return(qtdUnicos  < 3);
-    }
 
-    private void inicioSequencia(){
-        int ultimo = -1;
-        int inicio = -1;
-
-        if(verifica()){
-            if(qtdUnicos == 1){
-               inicio = unicos[0]; 
-            }else if(qtdUnicos == 2){
-                inicio = unicos[0]; 
-                ultimo = unicos[1];
-            }
-
-
-            for(int i =0; i < pecas.length; i++){
-                if(inicio != -1){
-                    if(pecas[i].verificaNum(inicio)){
-                        if(pecas[i].getDireita() == inicio){
-                            pecas[i].inverte();
-                        }
-                        resultado = new Lista(pecas[i]);
-                    }
-                }
-
-                if(ultimo != -1){
-                    if(pecas[i].verificaNum(ultimo)){
-                        if(pecas[i].getEsquerda() == ultimo){
-                            pecas[i].inverte();
-                        }
-                        ult = new Lista(pecas[i]);
-                    }
-                }
-            }
+        if(primeira != null){
+            resultado.add(primeira);
+        }else{
+            Peca aux = pecas.verifica(maisRepete());
+            resultado.add(aux);
         }
-    }
 
-    public void Sequencia(){
-        inicioSequencia();
-        Peca aux;
-        
-        for(int i =0; i < pecas.length; i++){
-            if(resultado.getPeca() != null){
-                aux = resultado.getPeca();
-            }else{
-              
+        while(resultado.size() <= pecas.size()){
+            int direita = resultado.getHead().getP().getDireita();
+
+            Peca aux = pecas.verifica(direita);
+            if(aux.getDireita() == direita){
+                aux.inverte();
             }
+            resultado.add(aux);
         }
-    }
-    
+   }
+
+   public Lista getResultado() {
+       return resultado;
+   }
 }
