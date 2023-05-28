@@ -33,7 +33,7 @@ public class Tabuleiro {
     }
 
     public boolean verifica(){
-        return(pecas.size() == qtdNumero() || unicos() < 3);
+        return(qtdNumero() >= pecas.size() && qtdNumero() < pecas.size() + unicos() && unicos() < 3);
     }
 
    public int maisRepete(){
