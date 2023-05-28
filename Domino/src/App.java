@@ -39,11 +39,14 @@ public class App {
 
         tabuleiro = new Tabuleiro(pecas);
 
+        System.out.println("\n");
+
         if(tabuleiro.verifica()){
-            System.out.println("\nÉ possível formar uma sequência");
-            tabuleiro.getResultado().show();
+            System.out.println("É possível formar uma sequência: \n");
+            tabuleiro.sequencia();
+           tabuleiro.getResultado().show();
         }else{
-            System.out.println("\nNão possível formar uma sequência");
-        }
+            System.out.println("Não é possível formar uma sequência com todas as peças");
+        }        
     }
 }

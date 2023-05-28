@@ -62,4 +62,28 @@ public class Lista {
         }
         return aux.getP();
     }
+
+    public void remove(Peca peca) {
+        if (head == null) {
+            return; 
+        }
+    
+        if (head.getP() == peca) {
+            head = head.getProx(); 
+            return;
+        }
+    
+        Node previous = head;
+        Node current = head.getProx();
+    
+        while (current != null) {
+            if (current.getP() == peca) {
+                previous.setProx(current.getProx()); 
+                return;
+            }
+    
+            previous = current;
+            current = current.getProx();
+        }
+    }
 }

@@ -40,4 +40,8 @@ public class Node {
     public Node getProx() {
         return prox;
     }
+
+    public void setProx(Node prox) {
+        this.prox = prox;
+    }
 }

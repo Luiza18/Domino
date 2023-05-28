@@ -1,81 +1,99 @@
 public class Tabuleiro {
     private Lista pecas;
     private Lista resultado;
-    private int vetorUnicos [] = new int[unicos()];
-
-    public Tabuleiro(Lista pecas){
+    private Lista pecasAux;
+    private int qtdNumeros = 0;
+    private int qtdUnicos = 0;
+    private int[] numerosUnicos = new int[2];
+    private int maior;
+    
+    public Tabuleiro(Lista pecas) {
         this.pecas = pecas;
+        resultado = new Lista();
+        analiseNumeros();
+        procuraUnicos();
     }
-
-    private int unicos(){
-        int vetor [] = pecas.tabela();
-        int qtd = 0;
-
-        for(int i =0; i < vetor.length; i++){
-            if(vetor[i] ==1){
-                vetorUnicos[qtd] = vetor[i];
-                qtd++;
+    
+    private void analiseNumeros() {
+        int[] tabela = pecas.tabela();
+        maior = 0;
+    
+        for (int i = 0; i < tabela.length; i++) {
+            if (tabela[i] == 1) {
+                qtdUnicos++;
+            }
+    
+            if (tabela[i] != 0) {
+                qtdNumeros++;
+            }
+    
+            if (tabela[i] > tabela[maior]) {
+                maior = i;
             }
         }
-        return qtd;
     }
-
-    public int qtdNumero(){
-        int vetor [] = pecas.tabela();
-        int qtd = 0;
-
-        for(int i =0; i < vetor.length; i++){
-            if(vetor[i] != 0){
-                qtd++;
+    
+    public void procuraUnicos() {
+        if (qtdUnicos > 0) {
+            int[] tabela = pecas.tabela();
+            int k = 0;
+    
+            for (int i = 0; i < tabela.length; i++) {
+                if (tabela[i] == 1) {
+                    numerosUnicos[k] = i;
+                    k++;
+                }
             }
         }
-        return qtd;
     }
-
+    
     public boolean verifica(){
-        return(qtdNumero() >= pecas.size() && qtdNumero() < pecas.size() + unicos() && unicos() < 3);
+        return(qtdNumeros < pecas.size() + qtdUnicos && qtdUnicos< 3);
     }
 
-   public int maisRepete(){
-    int vetor [] = pecas.tabela();
-    int maior = vetor[0];
-
-    for(int i =0; i < vetor.length; i++){
-        if(vetor[i] > maior){
-            maior = vetor[i];
-        }
-    }
-
-    return maior;
-   }
-
-   public void sequencia(){
+  public void sequencia(){
     Peca primeira = null; 
     Peca ultima = null;
 
-        if(unicos() > 0){
-            if(unicos() == 2){
-                ultima = pecas.verifica(vetorUnicos[1]);
+        if(qtdUnicos > 0){
+            if(qtdUnicos == 2){
+                ultima = pecas.verifica(numerosUnicos[1]);
+                pecas.remove(ultima);
             }
-
-            primeira = pecas.verifica(vetorUnicos[0]);
+            primeira = pecas.verifica(numerosUnicos[0]);
         }
 
-        if(primeira != null){
-            resultado.add(primeira);
-        }else{
-            Peca aux = pecas.verifica(maisRepete());
-            resultado.add(aux);
+        if (primeira != null) {
+            if (primeira.getDireita() == numerosUnicos[0]) {
+                primeira.inverte();
+            }
+        } else {
+            primeira = pecas.verifica(maior);
+            if (primeira != null) {
+                if (primeira.getEsquerda() == maior) {
+                    primeira.inverte();
+                }
+            }
         }
+        
+        resultado.add(primeira);
+        pecas.remove(primeira);
 
         while(resultado.size() <= pecas.size()){
             int direita = resultado.getHead().getP().getDireita();
 
+            if(pecas.size() == 1 && ultima != null){
+                resultado.add(ultima);
+                break;
+            }
+
             Peca aux = pecas.verifica(direita);
+
             if(aux.getDireita() == direita){
                 aux.inverte();
             }
             resultado.add(aux);
+            pecas.remove(aux);
         }
    }
 
