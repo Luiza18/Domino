@@ -50,7 +50,7 @@ public class Lista {
         return head;
     }
 
-    public Peca verifica(int num){
+    public Peca verifica(int num) {
         Node aux = head;
 
         while(aux != null){
@@ -62,26 +62,36 @@ public class Lista {
         }
         return aux.getP();
     }
+    
+    public Node ultimaPeca(){
+        Node aux = head;
+
+        while(aux.getProx() != null) {
+            aux = aux.getProx();
+        }
+
+        return aux;  
+    }
 
     public void remove(Peca peca) {
         if (head == null) {
-            return; 
-        }
-    
-        if (head.getP() == peca) {
-            head = head.getProx(); 
             return;
         }
-    
+
+        if (head.getP() == peca) {
+            head = head.getProx();
+            return;
+        }
+
         Node previous = head;
         Node current = head.getProx();
-    
+
         while (current != null) {
             if (current.getP() == peca) {
-                previous.setProx(current.getProx()); 
+                previous.setProx(current.getProx());
                 return;
             }
-    
+
             previous = current;
             current = current.getProx();
         }

@@ -47,6 +47,8 @@ public class App {
            tabuleiro.getResultado().show();
         }else{
             System.out.println("Não é possível formar uma sequência com todas as peças");
-        }        
+        }  
+        
+       
     }
 }

@@ -51,53 +51,59 @@ public class Tabuleiro {
         return(qtdNumeros < pecas.size() + qtdUnicos && qtdUnicos< 3);
     }
 
-  public void sequencia(){
-    Peca primeira = null; 
-    Peca ultima = null;
-
-        if(qtdUnicos > 0){
-            if(qtdUnicos == 2){
-                ultima = pecas.verifica(numerosUnicos[1]);
-                pecas.remove(ultima);
+    public void sequencia(){
+        Peca primeira = null; 
+        Peca ultima = null;
+        int direita = 0;
+    
+            if(qtdUnicos > 0){
+                if(qtdUnicos == 2){
+                    ultima = pecas.verifica(numerosUnicos[1]);
+                    pecas.remove(ultima);
+                }
+                primeira = pecas.verifica(numerosUnicos[0]);
             }
-            primeira = pecas.verifica(numerosUnicos[0]);
-        }
-
-        if (primeira != null) {
-            if (primeira.getDireita() == numerosUnicos[0]) {
-                primeira.inverte();
-            }
-        } else {
-            primeira = pecas.verifica(maior);
+    
             if (primeira != null) {
-                if (primeira.getEsquerda() == maior) {
+                if (primeira.getDireita() == numerosUnicos[0]) {
                     primeira.inverte();
                 }
+            } else {
+                primeira = pecas.verifica(maior);
+                if (primeira != null) {
+                    if (primeira.getEsquerda() == maior) {
+                        primeira.inverte();
+                    }
+                }
             }
-        }
-        
-        resultado.add(primeira);
-        pecas.remove(primeira);
+            
+            resultado.add(primeira);
+            pecas.remove(primeira);
+    
+            while(pecas.size() > 0){
 
-        while(resultado.size() <= pecas.size()){
-            int direita = resultado.getHead().getP().getDireita();
+                direita = resultado.ultimaPeca().getP().getDireita();
+    
+                if(pecas.size() == 1 && ultima != null){
+                    resultado.add(ultima);
+                    break;
+                }
 
-            if(pecas.size() == 1 && ultima != null){
-                resultado.add(ultima);
-                break;
+                Peca aux = pecas.verifica(direita);
+    
+                if(aux.getDireita() == direita){
+                    aux.inverte();
+                }
+                resultado.add(aux);
+                pecas.remove(aux);
             }
-
-            Peca aux = pecas.verifica(direita);
-
-            if(aux.getDireita() == direita){
-                aux.inverte();
-            }
-            resultado.add(aux);
-            pecas.remove(aux);
-        }
-   }
-
+       }
+    
    public Lista getResultado() {
        return resultado;
+   }
+
+   public Lista getPecas() {
+       return pecas;
    }
 }
