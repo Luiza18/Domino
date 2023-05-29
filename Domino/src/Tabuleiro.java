@@ -1,7 +1,7 @@
 public class Tabuleiro {
     private Lista pecas;
     private Lista resultado;
-    private Lista pecasAux;
+    private Peca primeira, ultima;
     private int qtdNumeros = 0;
     private int qtdUnicos = 0;
     private int[] numerosUnicos = new int[2];
@@ -51,14 +51,18 @@ public class Tabuleiro {
         return(qtdNumeros < pecas.size() + qtdUnicos && qtdUnicos< 3);
     }
 
-    public void sequencia(){
-        Peca primeira = null; 
-        Peca ultima = null;
+    private void inicioSequencia(){
+        primeira = null; 
+        ultima = null;
         int direita = 0;
+        int tamanho = pecas.size();
     
             if(qtdUnicos > 0){
                 if(qtdUnicos == 2){
                     ultima = pecas.verifica(numerosUnicos[1]);
+                    if(ultima.getEsquerda() == numerosUnicos[1]){
+                        ultima.inverte();
+                    }
                     pecas.remove(ultima);
                 }
                 primeira = pecas.verifica(numerosUnicos[0]);
@@ -68,7 +72,7 @@ public class Tabuleiro {
                 if (primeira.getDireita() == numerosUnicos[0]) {
                     primeira.inverte();
                 }
-            } else {
+            }else{
                 primeira = pecas.verifica(maior);
                 if (primeira != null) {
                     if (primeira.getEsquerda() == maior) {
@@ -79,26 +83,41 @@ public class Tabuleiro {
             
             resultado.add(primeira);
             pecas.remove(primeira);
-    
-            while(pecas.size() > 0){
 
-                direita = resultado.ultimaPeca().getP().getDireita();
+    }
     
-                if(pecas.size() == 1 && ultima != null){
-                    resultado.add(ultima);
-                    break;
-                }
+    private void sequenciaRepitidos(){
+        inicioSequencia();
 
-                Peca aux = pecas.verifica(direita);
-    
-                if(aux.getDireita() == direita){
-                    aux.inverte();
-                }
-                resultado.add(aux);
-                pecas.remove(aux);
+        while(pecas.size() > 0){
+            int direita = resultado.ultimaPeca().getP().getDireita();
+
+            Peca aux = pecas.verifica(direita);
+
+            if(aux.getDireita() == direita){
+                aux.inverte();
             }
-       }
-    
+            resultado.add(aux);
+            pecas.remove(aux);
+        }
+    }
+
+    private void sequenciaUnicos(){
+        int numeroUltima = ultima.getEsquerda();
+
+        while(pecas.size() > 0){
+            
+        }
+    }
+
+    public void sequencia(){
+        if(qtdUnicos != 2){
+            sequenciaRepitidos();
+        }else{
+            sequenciaUnicos();
+        }
+    }
+        
    public Lista getResultado() {
        return resultado;
    }

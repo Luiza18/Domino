@@ -1,6 +1,7 @@
 public class Node {
     private Peca p;
     private Node prox;
+    private Node ant;
 
     public Node(Peca p){
         this.p = p;
@@ -43,5 +44,12 @@ public class Node {
 
     public void setProx(Node prox) {
         this.prox = prox;
+    }
+
+    public Node getAnt() {
+        return ant;
+    }
+    public void setAnt(Node ant) {
+        this.ant = ant;
     }
 }
